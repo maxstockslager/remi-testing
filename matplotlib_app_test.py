@@ -73,7 +73,7 @@ class MyApp(App):
         super(MyApp, self).__init__(*args)
         
     def idle(self):
-        self.time_counter.set_text('Elapsed time: ' + str(self.time_count))
+        self.time_counter.set_text('Elapsed time: ' "%.1f" % self.time_count)
 
     def main(self): # i.e., setup? when does this run? "start"?
         wid = gui.VBox(width=350, height=600, margin='0px auto')
@@ -138,9 +138,10 @@ class MyApp(App):
             self.time_count = 0
             self.reset_time_flag = False
         else:
-            self.time_count += 1
+            self.time_count += 0.1
+            self.time_count = np.round(self.time_count, decimals = 1)
         
-        Timer(1, self.display_time_counter).start() # re-calls this every second
+        Timer(0.1, self.display_time_counter).start() # re-calls this every second
         
     def on_button_pressed(self, widget):
         self.plot_data = np.append(self.plot_data, self.plot_data[-1] -1 + 2*np.round(np.random.rand()))
