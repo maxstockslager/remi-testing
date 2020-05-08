@@ -104,8 +104,11 @@ class MyApp(App):
         timer_reset.style['margin'] = '10px'
         timer_reset.onclick.do(self.on_timer_reset_pressed)
         
+      
+        
         # plot and plot components
         self.plot_data = np.array([0])
+        self.spinbox_data = np.array([0])
         self.mpl = MatplotImage(width=250, height=250)
         self.mpl.style['margin'] = '10px'
         self.mpl.ax.set_title("test")
@@ -121,6 +124,10 @@ class MyApp(App):
         self.time_counter = gui.Label('Elapsed time: ', width=200, height=30, margin='10px')
         self.reset_time_flag = False
         self.display_time_counter() # starts the recurring timing
+        
+        # "spinbox" for control/input
+        self.dspinbox = gui.SpinBox(min=-100, max=100, width=200, height=20)
+        self.dspinbox.set_value(10)
      
         # Build widget from buttons
         wid.append(bt)
@@ -131,6 +138,7 @@ class MyApp(App):
         wid.append(self.counter)
         wid.append(self.time_counter)
         wid.append(self.mpl)
+        wid.append(self.dspinbox)
         return wid
 
     def display_time_counter(self):
@@ -145,8 +153,13 @@ class MyApp(App):
         
     def on_button_pressed(self, widget):
         self.plot_data = np.append(self.plot_data, self.plot_data[-1] -1 + 2*np.round(np.random.rand()))
+        self.spinbox_data = np.append(self.spinbox_data, int(self.dspinbox.get_value()))
+        
+        
         self.mpl.ax.plot(self.plot_data, 'k.')
         self.mpl.ax.plot(self.plot_data, 'k')
+        
+        self.mpl.ax.plot(self.spinbox_data, 'r')
         self.mpl.redraw()
 
     def on_clear_pressed(self, widget):
